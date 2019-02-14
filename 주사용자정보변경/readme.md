@@ -100,7 +100,7 @@
             005 | 기타 | 5
 
 4. 소스코드 변경 - 화면 및 사용자정의태그 수정
-    - (1) <kbd>TabbedGoodsUserView.jsp</kbd>
+    - (1) `TabbedGoodsUserView.jsp`
         - 추가: 새 공통코드 `COM120`의 사용을 위해 추가  
             ```
             <util:commonCodeList groupCode="COM120" listName="jobCounterpartCdsList"/>
@@ -113,7 +113,7 @@
             ```
             > PopHistGoogs.tag 는 사용자 정의 태그로, 정보 변경 히스토리를 출력하기 위한 처리를 포함하고 있다. 이 변경 히스토리는 다른 소스코드에서 추가 작업을 해줘야 정상적으로 보일 가능성이 높다. (이번엔 패스)
 
-    - (2) <kbd>MngUpdateUserPopup.jsp</kbd>
+    - (2) `MngUpdateUserPopup.jsp`
         - 추가: 새 공통코드 `COM120`의 사용을 위해 추가  
             ```
             <util:commonCodeList groupCode="COM120" listName="jobCounterpartCdsList"/>
@@ -123,7 +123,7 @@
             <crm:GoodsUserEditNew classOn="true" goodsUser="${goodsUser}" jobCdsList="${jobCdsList}" invtGoodsCdsList="${invtGoodsCdsList}" jobCounterpartCdsList="${jobCounterpartCdsList}"/>
             ```
 
-    - (3) <kbd>GoodsUserEditNew.tag</kbd>
+    - (3) `GoodsUserEditNew.tag`
         - 추가: 새 공통코드 `COM120`의 사용을 위해 추가  
         ```
         <%@ attribute name="jobCounterpartCdsList" required="true" type="Object" %>  
@@ -141,7 +141,7 @@
 
 
 5. 소스코드 변경 - 기능 처리 로직 수정
-    - (1) <kbd>GoodsUser_SQL_mysql.xml</kbd>
+    - (1) `GoodsUser_SQL_mysql.xml`
         - 변경: 최초에 사용자 정보 삽입할 때 `업무상대방` 항목도 저장
         ```
         <insert id="insertGoodsUserNew" parameterType="ZValue">  
@@ -202,34 +202,52 @@
         - 이 기능의 사용은 일회성이므로, 임시 기능을 구현하는 쪽에 모으는 것이 편리하다.
         - 이러한 임시 기능의 구현은 TempFunctionList.jsp 로부터 시작한다.
     2. TempFunctionList.jsp 에 아래와 같이 신규 기능을 실행하기 위한 URL 호출 버튼을 추가한다.
-        - `TempFunction34`로 추가
+        - `TempFunction34()`로 추가
     ```
     <tr>
         <td>34</td>
         <td>2019-02-07</td>
         <td>tempFunction34: 고객정보 항목변경 및 일괄 업데이트</td>
-        <td style="text-align:left;">
-            <script>
-            function tempFunction34() {
-                $("div#ajaxResult").html("");
-                if(confirm("채권고급형에 따른 Prebon 옵션 일괄 변경")) {
-                    showLoader();
-                    var url = "/bos/crm/ext/tempFunction34.json";
-                    callAjax(url);
-                }
-            }
-            </script>
-        </td>
+        ...
         <td><a href="javascript:tempFunction34();" class="btn btn-xs btn-danger">실행</a></td>
     </tr>
     ```
-    > '실행' 버튼을 누르면 `function tempFunction34()``가 실행되고, 이 함수는 그 내부의 **url** 을 정상적으로 실행할 수 있는 구조이기만 하면 된다.
+    > '실행' 버튼을 누르면 `function tempFunction34()`가 실행되고, 이 함수는 그 내부의 __url__ 을 정상적으로 실행할 수 있는 구조이기만 하면 된다.
 
-    3. `TempFunctionController.java, TempFunctionService.java` 에 실제 처리 로직을 구현할 예정이지만, 일단 원활한 테스트를 위해 `TempFunctionTest.java`</kbd>` 에서 먼저 junit 테스트 방식으로 로직을 선 구현한다.  
-    (이후 이 내용을 `TempFunctionService.java` 로 옮길 것이다.)
+    3. `TempFunctionController.java, TempFunctionService.java` 에 실제 처리 로직을 구현할 예정이지만, 일단 원활한 테스트를 위해 `TempFunctionTest.java` 에서 먼저 junit 테스트 방식으로 로직을 선 구현한다. (이후 이 내용을 `TempFunctionService.java` 로 옮길 것이다.)
 
-    4. TempFunctionTest.java 에 아래와 같은 소스코드를 작성한 뒤, <kbd>Alt + Shift + X, T</kbd> 로 실행하여 정상 동작하는지 확인한다.
+    4. `TempFunctionTest.java` 에 아래와 같은 소스코드를 작성한 뒤, `Alt + Shift + X, T` 로 실행하여 정상 동작하는지 확인한다.
     ```
-    Source Code
+    public void tempFunction34() {
+        dao.clearDataTempFunc34();
+        List<ZValue> newData = dao.getSourceDataTempFunc34();
+        for(ZValue newVal : newData) {
+            ...
+        }
+    }
+
+    private void compareAndUpdateDataTempFunc34(int convertType, ZValue oldVal, ZValue newVal) throws Exception {
+        ...
+    }
+    ```
+
+    5. 정상동작이 확인되면 `TempFunctionService.java` 에 동일한 함수를 작성하고, URL로 호출 가능하도록 `TempFunctionController.java`에 `@RequestMapping("...")`부분도 작성한다.
+    ```
+    @RequestMapping(value="/bos/crm/ext/tempFunction/tempFunction34.json", method=RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<JSONObject> tempFunction34(ZValueParam zparam, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            srvTemp.tempFunction34();
+        } catch (Exception e) {
+            ...
+        }
+        return new ResponseEntity<JSONObject>(result, HttpStatus.OK); 
+    }	
     ```
     
+    6. `관리자기능 - 테스트보드 - 임시기능 모음 - No.34 tempFunction34: ...` 의 `실행` 버튼을 클릭하여 작업한 기능을 실행하면 데이터 일괄 변경이 적용된다.
+
+    ![img](img/004.png)
+
+### End of Doc.
