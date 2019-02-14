@@ -84,15 +84,15 @@ Default path | /run/tsmaster |
 
 3. Local 개발환경에서 개발MySQL로 로그 데이터를 import 한다.
 	- Toad의 import 기능을 이용한다.
-	- 이번 작업을 위해 CUST_SCR_INFO 라는 신규 테이블을 생성하여 모든 로그 데이터를 해당 테이블에 올렸다.
+	- 이번 작업을 위해 `CUST_SCR_INFO` 라는 신규 테이블을 생성하여 모든 로그 데이터를 해당 테이블에 올렸다.
 
 4. 요청에 적합한 쿼리를 작성하여 개발MySQL에 있는 데이터의 결과를 추출하고, 정리한다.
 	- 이번 요청은 `아예 한 번도 화면을 보지 않은 PID`, 즉 CUST_SCR_INFO 로그가 존재하지 않는 PID도 있을 가능성이 있다.
 	- 또한 요청 받은 자료의 엑셀에 표시된 PID의 순서를 맞춰서 파악하는 것이 중요하다.
 	- 따라서 `CUST_ID_LIST`란 테이블을 만들어 요청엑셀의 PID 순서대로 업로드 한 뒤 <kbd>left outer join</kbd>을 이용하여 CUST_SCR_INFO 데이터가 없는 경우에도 대응한다.
-	- 원하는 대로 결과를 생성하기 위해 (수십개에 달하는 PID별 조회 화면번호를 일렬로 정렬)koscom_crm 프로젝트에서 TempFunctionTest.java 에 간단한 JUnit 테스트 함수를 만들어 실행하였다.
+	- 원하는 대로 결과를 생성하기 위해 (수십개에 달하는 PID별 조회 화면번호를 일렬로 정렬) koscom_crm 프로젝트에서 TempFunctionTest.java 에 간단한 JUnit 테스트 함수를 만들어 실행하였다.
 		- JUnit 실행 단축키: <kbd>alt + shift + x, t</kbd>
-	- 결과를 writeLog 를 통해 파일에 쓰도록 한 뒤, 각 월별 결과 파일을 엑셀에 정리하였다.
+	- 결과를 <kbd>writeLog</kbd> 함수를 통해 파일에 쓰도록 한 뒤, 각 월별 결과 파일을 엑셀에 정리하였다.
 	- 자세한 내용은 <kbd>TempFunctionTest.java</kbd>의 <kbd>`TempFunction35()`</kbd>를 참고한다.
 	```
 	@Test
@@ -140,8 +140,39 @@ Default path | /run/tsmaster |
 	```
 	![img](img/001.png)
 6. 답장 및 전달한 결과 파일의 형태는 아래와 같다.
+
 ![img](img/002.png)
 ![img](img/003.png)
 ![img](img/004.png)
 
+7. [추가 요청] 화면번호에 `화면명` 정보를 추가해 달라는 요청이 있었다.
+- CHECK 화면번호에 대한 화면명 정보는 일단 `증권종합DB - RCT01 계정(개발은 DCT01) - CHECK_MENU` 테이블에서 찾을 수 있다.
+- 이 `CHECK_MENU` 정보는 CRM의 통계정보 중 `화면통계`의 `대상화면` 정보를 표시할 때 이용하는 데이터지만, 이런 사용자가 요청한 통계 자료 작성시에도 활용할 수 있다.
+- 증권종합DB의 `CHECK_MENU` 테이블은 자동으로 갱신되지 않는다. 최신정보로 업데이트 할 필요가 있으면, **클라이언트 담당자**에게 요청하여 최신 데이터를 받은 후, 이를 직접 _수작업으로 업로드_ 해야 한다.
+  - 이번 작업을 위해 <u>정보업무팀 최대한 사원</u>에게 최신 데이터를 요청하였다.
+- 이번 작업은 로그를 MySQL DB로 옮겨온 후 작업하였으므로, CHECK_MENU 테이블 역시 MySQL에 복제 생성하여 이용한다. 4.에서 이용했던 임시 함수 TempFunction35()는 아래와 같이 변경된다.
+	- TempFunctionTest.java 변경 _`실제 변경내용은 소스코드 참조`_
+	```
+	@Test
+	public void tempFunction35() {
+		... 
+	}
+	```
 
+	- TempFunction_SQL_mysql.xml 변경
+	```
+	<select id="getListTempFunc35" resultType="ZValue">
+		select t1.CUST_ID, t2.SCREEN_NO, t2.COUNT, t3.MENU_NAME
+		from CUST_ID_LIST t1 left outer join (
+			...
+		) t2 on t1.CUST_ID=t2.CUST_ID
+		left outer join CHECK_MENU t3 on t2.SCREEN_NO=t3.TR_CODE
+	</select>
+	```
+
+8. `화면명` 정보가 추가된 데이터를 다시 정리한 결과물은 아래와 같다.
+
+![img](img/005.png)
+
+
+### End of Doc.
