@@ -1,0 +1,1 @@
+alter table TN_GOODS_USER add column JOB_COUNTERPART_CDS varchar(100) after JOB_CDS;
