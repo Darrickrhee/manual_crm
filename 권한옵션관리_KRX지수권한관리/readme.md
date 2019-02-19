@@ -88,20 +88,24 @@
 	> 유사한 통계기능을 추가로 개발해야 한다면 아래 소스들을 참고하여 비슷한 구성으로 개발하면 된다.
 
 	- Controller
-		- `StatsMngContoller.java`
+		- StatsMngContoller.java
 			> KRX지수구성통계 뿐만 아니라 다른 통계 기능메뉴의 Request들도 처리하는 컨트롤러
+			
 			```
 			if ("Kidx".equals(prefixStat)) {
 				...
 			}
 			```
+
 	- Service
-		- `StatsService.java`
+		- StatsService.java
+			
 			```
 			public List<ZValue> kidxCustmrList(ZValue vo) {
 				...
 			}
 			```
+			
 			```
 			public List<ZValue> kidxViewCountList(ZValue vo) {
 				...
@@ -111,6 +115,7 @@
 	- DAO
 		- StatsDAO.java
 			> KRX지수구성 권한명 정보는 여기서
+			
 		- StatsHdbDAO.java
 			> 실제 로그 데이터 및 통계 결과는 여기서
 	- SQL
