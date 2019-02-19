@@ -3,6 +3,8 @@
 ID | PW |
 ---- | ---- |
 jwahn | Angelaow320!
+21246 | Angela00!
+
 
 ### Fortify 계정
 
