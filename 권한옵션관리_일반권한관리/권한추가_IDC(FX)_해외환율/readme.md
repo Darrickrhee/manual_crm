@@ -62,7 +62,7 @@
 
 1. ETC - IDC(FX) - 해외환율 권한의 설정 변경 시 이벤트 처리 함수 추가
     - MngUpdateOptionPopup.jsp
-        <pre><code>
+        ```
         //20190221 ETC-IDC(FX)-해외환율 권한 보유 고객수에 따른 유무상구분 세팅
         function setOpt77() {
             var val = $("select#optList\\[77\\]\\.authorSeCd").val();
@@ -93,14 +93,14 @@
             $("select#optList\\[77\\]\\.authorSeCd").change(setOpt77);
             ...
         }
-        </code></pre>
+        ```
 2. 현재 옵션을 보유하고 있는 고객수를 확인할 수 있는 처리 로직을 컨트롤러, 서비스, DAO 및 xml에 추가
     - GoodsScrnController.java
         ```
-            @RequestMapping("/bos/crm/goods/getOptionNo77NotPaidCount.json")
-            public @ResponseBody ZValue getOptionNo77NotPaidCount(ZValueParam zparam, ModelMap model) {
-                ...
-            }
+        @RequestMapping("/bos/crm/goods/getOptionNo77NotPaidCount.json")
+        public @ResponseBody ZValue getOptionNo77NotPaidCount(ZValueParam zparam, ModelMap model) {
+            ...
+        }
         ```
 
     - GoodsScrnService.java
