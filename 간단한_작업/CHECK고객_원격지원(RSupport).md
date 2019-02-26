@@ -3,13 +3,15 @@
 > 미리 RSupport 사용 신청을 위한 보안 관련 선행 작업이 되어 있어야 하며,  
 > RSupport 프로그램을 다운 받아 설치해 놓아야 한다.
 
-1. CMS 접속 - 보안업무 - 인터넷pc 사용 및 부가권한 신청서 - 인터넷 pc 프로그램 사용신청서 작성
+### [보안 선행 작업]
+1. 나누미에서 - CMS 접속 - 보안업무 - 인터넷pc 사용 및 부가권한 신청서 - 인터넷 pc 프로그램 사용신청서 작성
     ![img](img/img_rsupport.png)
 
 
 2. 팀장 결재까지 상신
     > ※ IT리스크팀 담당자: 이루리 대리
 
+### [RSupport 프로그램 설치]
 
 3. RSupport 프로그램을 설치한 뒤 실행한다.
     - Download URL: <a href="">https://www.rsupport.com/ko-kr/resources/download/product-program/</a>
