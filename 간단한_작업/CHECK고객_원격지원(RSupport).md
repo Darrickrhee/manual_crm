@@ -18,6 +18,7 @@
     - 대상: 리모트콜 6.0 Windows용 통합 Agent 설치파일
 
 4. RSupport에 로그인한다.
+
     ID | PW |
     ---- | ---- |
     check1 ~ check9 | koscom@1
