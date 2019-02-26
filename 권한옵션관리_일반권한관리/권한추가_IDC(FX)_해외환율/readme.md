@@ -97,10 +97,10 @@
 2. 현재 옵션을 보유하고 있는 고객수를 확인할 수 있는 처리 로직을 컨트롤러, 서비스, DAO 및 xml에 추가
     - GoodsScrnController.java
         ```
-            @RequestMapping("/bos/crm/goods/getOptionNo77NotPaidCount.json")
-            public @ResponseBody ZValue getOptionNo77NotPaidCount(ZValueParam zparam, ModelMap model) {
-                ...
-            }
+        @RequestMapping("/bos/crm/goods/getOptionNo77NotPaidCount.json")
+        public @ResponseBody ZValue getOptionNo77NotPaidCount(ZValueParam zparam, ModelMap model) {
+            ...
+        }
         ```
 
     - GoodsScrnService.java
