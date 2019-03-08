@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--><!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ --><Server port="8005" shutdown="SHUTDOWN">
+  <!-- Security listener. Documentation at /docs/config/listeners.html
+  <Listener className="org.apache.catalina.security.SecurityListener" />
+  -->
+  <!--APR library loader. Documentation at /docs/apr.html -->
+  <Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
+  <!--Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
+  <Listener className="org.apache.catalina.core.JasperListener"/>
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+
+  <!-- Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  -->
+  <GlobalNamingResources>
+    <!-- Editable user database that can also be used by
+         UserDatabaseRealm to authenticate users
+    -->
+    <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+
+    <!-- MySQL Dev -->
+      <Resource name="jdbc/crm"
+          auth="Container"
+          type="javax.sql.DataSource"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://148.0.51.18:3306/kc_crm?zeroDateTimeBehavior=convertToNull"
+          username="kc_crm"
+          password="kc_crm"
+          maxActive="30"
+          maxIdle="30"
+          maxWait="8000"
+          removeAbandoned="true"
+          removeAbandonedTimeout="20"
+          logAbandoned="true"
+          factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+          validationQuery="select 1"
+          minEvictableIdleTimeMillis="3600000"		
+          timeBetweenEvictionRunsMillis="1800000"
+          numTestsPerEvictionRun="10"
+          testWhileIdle="true"
+          testOnBorrow="true"
+          testOnReturn="false"
+          />
+          
+    <!-- 20170111 jwahn 문자 발송 이력 관리 위해 forms 추가 -->
+    <!-- 
+       <Resource name="jdbc/forms" 
+           auth="Container" 
+           type="javax.sql.DataSource" 
+           driverClassName="com.mysql.jdbc.Driver" 
+           url="jdbc:mysql://10.20.170.111:3306/kc_forms?zeroDateTimeBehavior=convertToNull" 
+           username="kc_forms" 
+           password="kc_forms" 
+           maxActive="30" 
+           maxIdle="30" 
+           maxWait="8000" 
+           removeAbandoned="true" 
+           removeAbandonedTimeout="20" 
+           logAbandoned="true" 
+           factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory" 
+           validationQuery="select 1" 
+           minEvictableIdleTimeMillis="3600000" 
+           timeBetweenEvictionRunsMillis="1800000" 
+           numTestsPerEvictionRun="10" 
+           testWhileIdle="true" 
+           testOnBorrow="true" 
+           testOnReturn="false" 
+           /> 
+    -->
+
+    <!-- Alti HDB Dev -->
+      <Resource name="jdbc/hdb"
+          auth="Container"
+          type="javax.sql.DataSource"
+          driverClassName="Altibase.jdbc.driver.AltibaseDriver"
+          url="jdbc:Altibase://10.150.11.13:20300/GINFODB?encoding=MS949"
+          username="DCM01"
+          password="DCM01"
+          maxActive="30"
+          maxIdle="30"
+          maxWait="8000"
+          removeAbandoned="true"
+          removeAbandonedTimeout="20"
+          logAbandoned="true"
+          factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+          validationQuery="select 1"
+          minEvictableIdleTimeMillis="3600000"
+          timeBetweenEvictionRunsMillis="1800000"
+          numTestsPerEvictionRun="10"
+          testWhileIdle="true"
+          testOnBorrow="true"
+          testOnReturn="false"
+          />
+
+    <!-- XDB Test-->
+      <Resource name="jdbc/xdb"
+          auth="Container"
+          type="javax.sql.DataSource"
+          driverClassName="Altibase_xdb.jdbc.driver.AltibaseDriver"
+          url="jdbc:Altibase:remote://10.150.11.4:20300/FINFODB1?encoding=MS949"
+          username="DBWORK"
+          password="DBWORK"
+          maxActive="30"
+          maxIdle="30"
+          maxWait="8000"
+          removeAbandoned="true"
+          removeAbandonedTimeout="20"
+          logAbandoned="true"
+          factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+          validationQuery="select 1"
+          minEvictableIdleTimeMillis="3600000"
+          timeBetweenEvictionRunsMillis="1800000"
+          numTestsPerEvictionRun="10"
+          testWhileIdle="true"
+          testOnBorrow="true"
+          testOnReturn="false"
+          />
+
+<!--   <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory" maxActive="15" maxIdle="3" maxWait="8000" name="jdbc/ems65" password="ems65" type="javax.sql.DataSource" url="jdbc:mysql://10.20.170.111:3306/ems65" username="ems65"/> -->
+
+    <!-- EMS DB에 대한 JNDI 설정. by PJS -->
+    <!--
+    <Resource name="jdbc/ems"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://10.20.170.111:3306/ems65"
+        username="ems65"
+        password="ems65"
+        maxActive="15"
+        maxIdle="3"
+        maxWait="8000"
+        factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+        />
+    -->
+
+  </GlobalNamingResources>
+
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container",
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+  <Service name="Catalina">
+
+    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+    <!--
+    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+        maxThreads="150" minSpareThreads="4"/>
+    -->
+
+
+    <!-- A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL HTTP/1.1 Connector on port 8080
+    -->
+    <Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8" />
+    <!-- A "Connector" using the shared thread pool-->
+    <!--
+    <Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    -->
+    <!-- Define a SSL HTTP/1.1 Connector on port 8443
+         This connector uses the JSSE configuration, when using APR, the
+         connector should be using the OpenSSL style configuration
+         described in the APR documentation -->
+    <!--
+    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+               maxThreads="150" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" />
+    -->
+
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" URIEncoding="UTF-8"/>
+
+
+    <!-- An Engine represents the entry point (within Catalina) that processes
+         every request.  The Engine implementation for Tomcat stand alone
+         analyzes the HTTP headers included with the request, and passes them
+         on to the appropriate Host (virtual host).
+         Documentation at /docs/config/engine.html -->
+
+    <!-- You should set jvmRoute to support load-balancing via AJP ie :
+    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+    -->
+    <Engine defaultHost="localhost" name="Catalina">
+
+      <!--For clustering, please take a look at documentation at:
+          /docs/cluster-howto.html  (simple how to)
+          /docs/config/cluster.html (reference documentation) -->
+      <!--
+      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+      -->
+
+      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
+           via a brute-force attack -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <!-- This Realm uses the UserDatabase configured in the global JNDI
+             resources under the key "UserDatabase".  Any edits
+             that are performed against this UserDatabase are immediately
+             available for use by the Realm.  -->
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+
+        <!-- SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+        -->
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html
+             Note: The pattern used is equivalent to using pattern="common"
+        -->
+        <!--
+        <ResourceLink global="jdbc/forms" name="jdbc/forms" type="javax.sql.DataSource" />
+        <ResourceLink global="jdbc/ems" name="jdbc/ems" type="javax.sql.DataSource" />
+        -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
+          <Context docBase="koscom_crm" path="/" reloadable="true" source="org.eclipse.jst.jee.server:koscom_crm">
+            <ResourceLink global="jdbc/crm" name="jdbc/crm" type="javax.sql.DataSource" />
+            <ResourceLink global="jdbc/hdb" name="jdbc/hdb" type="javax.sql.DataSource" />
+            <ResourceLink global="jdbc/xdb" name="jdbc/xdb" type="javax.sql.DataSource" />
+          </Context>
+      </Host>
+    </Engine>
+  </Service>
+</Server>
