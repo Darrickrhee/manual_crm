@@ -1,4 +1,4 @@
-# CHECK CRM 개요
+### CHECK CRM 개요
 
 CHECK crm은 CHECK를 이용하는 **고객에 대한 각종 정보**를 비롯하여, CHECK 서비스 자체의 운영을 위해 필요한 주요 정보들에 접근하여 관리할 수 있는 UI를 제공하는 **종합 운영 관리** 웹 어플리케이션이다.
 
@@ -316,3 +316,15 @@ MySQL의 **kc_crm** db뿐만 아니라 정보시스템의 **증권종합db(hdb)*
         - 체크되어 있을 경우 전화 수신 시 팝업이 뜨도록 되어 있으나, 콜중계서버 관리가 미비해 지면서 현재는 팝업이 잘 안뜨는 직원이 더 많아졌다.
 
 ----
+
+### File Upload
+
+test.check.co.kr/checkcms/upload.jsp
+
+### Dev Server Dir
+
+/data/koscom/kc_check/upload/file
+
+### Download
+
+test.check.co.kr/upload/file/{fileName}
